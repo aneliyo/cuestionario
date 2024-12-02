@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuestionario</title> <!-- Cambié el título aquí -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5dc;
+      text-align: center;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .question-container, #finalQuestion, #letter {
+      display: none; 
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .question-container.active, #finalQuestion.active, #letter.active {
+      display: flex;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+      text-align: center;
+    }
+    #heart {
+      font-size: 50px;
+      color: red;
+      margin-top: 20px;
+      display: none;
+    }
+    #no {
+      position: relative;
+    }
+    #letter {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.5;
+      z-index: 10;
+    }
+    #letter h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    #close, #openLink {
+      margin-top: 15px;
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #close:hover, #openLink:hover {
+      background-color: #45a049;
+    }
+    #openLink {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="quizTitle">Cuestionario</h1> <!-- El título visible en la página -->
+
+  <!-- Preguntas del Quiz -->
+  <div id="question1" class="question-container active">
+    <h2>¿Cuál es tu color favorito?</h2>
+    <input type="text" id="colorInput" placeholder="Escribe tu respuesta aquí">
+    <button onclick="nextQuestion('question2')">Siguiente</button>
+  </div>
+
+  <div id="question2" class="question-container">
+    <h2>¿Prefieres el día o la noche?</h2>
+    <button onclick="nextQuestion('question3')">Día</button>
+    <button onclick="nextQuestion('question3')">Noche</button>
+  </div>
+
+  <div id="question3" class="question-container">
+    <h2>¿Qué tipo de comida prefieres?</h2>
+    <button onclick="nextQuestion('question4')">Dulce</button>
+    <button onclick="nextQuestion('question4')">Salada</button>
+  </div>
+
+  <div id="question4" class="question-container">
+    <h2>¿Cuál es tu animal favorito?</h2>
+    <button onclick="nextQuestion('question5')">Perro</button>
+    <button onclick="nextQuestion('question5')">Gato</button>
+  </div>
+
+  <div id="question5" class="question-container">
+    <h2>¿Qué prefieres para relajarte?</h2>
+    <button onclick="nextQuestion('finalQuestion')">Leer</button>
+    <button onclick="nextQuestion('finalQuestion')">Escuchar música</button>
+  </div>
+
+  <!-- Pregunta final -->
+  <div id="finalQuestion" class="question-container">
+    <h1>¡Has llegado al final!</h1>
+    <h2>¿Prom?</h2>
+    <div class="buttons">
+      <button id="yes">Sí</button>
+      <button id="no">No</button>
+    </div>
+    <div id="heart">❤️</div>
+  </div>
+
+  <!-- Carta -->
+  <div id="letter">
+    <h2>Una carta para ti</h2>
+    <p>
+      Lamento no poder pedirte esto en persona. Tenía algo grande planeado, pero debido a mis prácticas no pude realizarlo.  
+      Quiero que sepas lo especial que eres para mí, y lo mucho que significa que aceptes acompañarme a este evento tan importante.  
+      Aunque no pude expresarlo cara a cara, espero que esta pequeña carta y gesto sean suficientes para mostrarte cuánto me importas.  
+      Gracias por estar aquí y hacer este momento inolvidable.
+    </p>
+    <div>
+      <button id="close">Cerrar</button>
+      <button id="openLink">Abrir enlace</button>
+    </div>
+  </div>
+
+  <script>
+    const yesButton = document.getElementById('yes');
+    const noButton = document.getElementById('no');
+    const heart = document.getElementById('heart');
+    const letter = document.getElementById('letter');
+    const closeButton = document.getElementById('close');
+    const openLinkButton = document.getElementById('openLink');
+    let currentQuestion = 1;
+
+    function nextQuestion(nextId) {
+      document.querySelector('.question-container.active').classList.remove('active');
+      document.getElementById(nextId).classList.add('active');
+      currentQuestion++;
+      document.getElementById('quizTitle').textContent = `Pregunta número ${currentQuestion}`;
+      if (nextId === 'finalQuestion') {
+        document.getElementById('quizTitle').textContent = '¡Has llegado al final!';
+      }
+    }
+
+    // Evento para el botón "Sí"
+    yesButton.addEventListener('click', () => {
+      heart.style.display = 'block';
+      setTimeout(() => {
+        letter.classList.add('active');
+      }, 1000);
+    });
+
+    // Evento para el botón "No"
+    noButton.addEventListener('click', () => {
+      const currentSize = parseFloat(window.getComputedStyle(noButton).fontSize);
+      noButton.style.fontSize = (currentSize * 0.9) + 'px';
+
+      const yesSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+      yesButton.style.fontSize = (yesSize * 1.1) + 'px';
+
+      const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.position = 'absolute';
+      noButton.style.left = `${randomX}px`;
+      noButton.style.top = `${randomY}px`;
+    });
+
+    // Evento para cerrar la carta
+    closeButton.addEventListener('click', () => {
+      letter.classList.remove('active');
+    });
+
+    // Evento para abrir el enlace
+    openLinkButton.addEventListener('click', () => {
+      window.open('https://hug.doneber.dev/hug/P2Zyb209YW5lbCZ0bz1pc2EmbXNndD1HcmFjaWFzK3BvcithY2VwdGFyJm1zZ2w9aHR0cHMlM0ElMkYlMkZ5b3V0dS5iZSUyRjhEVi04WW53MWhjJTNGc2klM0R6emJoeFcyVEh0SE1vUXpVJmltZ0lkPTJlNDUwNDE3', '_blank');
+    });
+  </script>
+</body>
+</html>
